@@ -38,13 +38,13 @@
 
             resultsDiv.innerHTML = '<div class="loading">Searching...</div>';
 
-            // Use api-integration.js to load data
+            
             const result = await RecipeAPI.searchRecipes(query);
             
             if (result === "failed to load") {
                 resultsDiv.innerHTML = '<p class="empty-state">failed to load</p>';
             } else {
-                // Handle successful data display
+
                 if (result && result.length > 0) {
                     resultsDiv.innerHTML = '<h2>Search Results</h2>';
                     result.forEach(recipe => {
@@ -68,3 +68,4 @@
     </script>
 </body>
 </html>
+
