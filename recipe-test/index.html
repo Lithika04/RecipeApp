@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Recipes - Find Your Perfect Meal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Delicious Recipes</h1>
+        <p>Find your perfect meal</p>
+    </header>
+
+    <main>
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search for recipes...">
+                <button onclick="searchRecipes()">Search</button>
+            </div>
+        </section>
+
+        <section id="results" aria-live="polite">
+          
+        </section>
+    </main>
+
+    <script src="js/api-integration.js"></script>
+    <script>
+        async function searchRecipes() {
+            const query = document.getElementById('searchInput').value.trim();
+            const resultsDiv = document.getElementById('results');
+            
+            if (!query) {
+                resultsDiv.innerHTML = '<p class="empty-state">Please enter a search term</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<div class="loading">Searching...</div>';
+
+            // Use api-integration.js to load data
+            const result = await RecipeAPI.searchRecipes(query);
+            
+            if (result === "failed to load") {
+                resultsDiv.innerHTML = '<p class="empty-state">failed to load</p>';
+            } else {
+                // Handle successful data display
+                if (result && result.length > 0) {
+                    resultsDiv.innerHTML = '<h2>Search Results</h2>';
+                    result.forEach(recipe => {
+                        const recipeDiv = document.createElement('div');
+                        recipeDiv.className = 'recipe-card';
+                        recipeDiv.innerHTML = `
+                            <h3>${recipe.name}</h3>
+                            <p>${recipe.description || 'No description available.'}</p>
+                        `;
+                        resultsDiv.appendChild(recipeDiv);
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<p class="empty-state">No recipes found</p>';
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('results').innerHTML = '';
+        });
+    </script>
+</body>
+</html>
