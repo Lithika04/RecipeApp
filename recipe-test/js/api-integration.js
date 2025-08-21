@@ -21,7 +21,7 @@ async function makeAPICall(endpoint, method = 'GET', data = null) {
         
         return await response.json();
     } catch (error) {
-        // Return "failed to load" for any error
+    
         return "failed to load";
     }
 }
@@ -48,3 +48,4 @@ window.RecipeAPI = {
     getRecipesByCuisine,
     getTopRatedRecipes
 };
+
